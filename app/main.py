@@ -37,8 +37,10 @@ def trans_dict(data: dict) -> dict:
     for meal in meals:
         for key, value in meal.items():
             if isinstance(value, str) and value.strip():
-                translated = translator_pt.translate(value)
-                meal[key] = translated
+                try:
+                    meal[key] = translator_pt.translate(value)
+                except Exception:
+                    meal[key] = value
     return {
         "meals": meals
     }
