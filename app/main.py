@@ -8,25 +8,17 @@ app = FastAPI()
 translator_pt = GoogleTranslator(source="en", target="pt")
 translator_en = GoogleTranslator(source="pt", target="en")
 
-def get_HTTPError(sts_code: int) -> str:
-    match sts_code:
-        case 400:
-            error = "Requisição inválida"
-        case 401:
-            error = "Acesso não autorizado"
-        case 403:
-            error = "Acesso negado"
-        case 404:
-            error = "Nenhuma receita encontrada"
-        case 500:
-            error = "Erro interno do servidor"
-        case 502:
-            error = "Bad Gateway"
-        case 503:
-            error = "Serviço indisponível"
-        case _:
-            error = "Erro HTTP"
-    return error
+def get_HTTPError(stts_code: int) -> str:
+    HTTP_ERRORS = {
+        400: "Requisição inválida",
+        401: "Acesso não autorizado",
+        403: "Acesso negado",
+        404: "Nenhuma receita encontrada",
+        500: "Erro interno do servidor",
+        502: "Bad Gateway",
+        503: "Serviço indisponível",
+    }
+    return HTTP_ERRORS.get(stts_code, "Erro HTTP")
 
 def trans_text(text: str) -> str:
     txt_trans = translator_en.translate(text)
