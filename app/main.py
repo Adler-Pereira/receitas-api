@@ -41,7 +41,7 @@ def get_receita(ingredient: str) -> dict:
     url = "https://www.themealdb.com/api/json/v1/1/search.php"
     ing_trans = trans_text(ingredient)
     params = {"s": ing_trans}
-    headers = {
+    HEADERS = {
         "User-Agent": "receitas-api-python",
         "Accept": "application/json"
     }
@@ -50,7 +50,7 @@ def get_receita(ingredient: str) -> dict:
         response = requests.get(
             url,
             params = params,
-            headers = headers,
+            headers = HEADERS,
             timeout = 5
         )
         response.raise_for_status()
