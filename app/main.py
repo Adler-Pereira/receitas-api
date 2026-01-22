@@ -25,7 +25,7 @@ def trans_text(text: str) -> str:
 
 def trans_dict(data: dict) -> dict:
     meals = data.get("meals", [])
-    FIELDS_TO_TRANSLATE = {
+    FIELDS_TO_SKIP_TRANSLATE = {
         "idMeal",
         "strMealThumb",
         "strYoutube",
@@ -35,7 +35,7 @@ def trans_dict(data: dict) -> dict:
     }
     for meal in meals:
         for key, value in meal.items():
-            if key not in FIELDS_TO_TRANSLATE and isinstance(value, str) and value.strip():
+            if key not in FIELDS_TO_SKIP_TRANSLATE and isinstance(value, str) and value.strip():
                 try:
                     meal[key] = translator_pt.translate(value)
                 except Exception:
