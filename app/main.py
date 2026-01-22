@@ -21,8 +21,7 @@ def get_HTTPError(stts_code: int) -> str:
     return HTTP_ERRORS.get(stts_code, "Erro HTTP")
 
 def trans_text(text: str) -> str:
-    txt_trans = translator_en.translate(text)
-    return txt_trans
+    return translator_en.translate(text)
 
 def trans_dict(data: dict) -> dict:
     meals = data.get("meals", [])
