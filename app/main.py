@@ -25,7 +25,8 @@ def trans_text(text: str) -> str:
 
 def trans_dict(data: dict) -> dict:
     meals = data.get("meals", [])
-    FIELDS_TO_SKIP_TRANSLATE = {
+
+    FIELDS_TO_SKIP_TRANSLATION = {
         "idMeal",
         "strMealThumb",
         "strYoutube",
@@ -33,16 +34,52 @@ def trans_dict(data: dict) -> dict:
         "strImageSource",
         "dateModified"
     }
+
+    SEPARATOR = "\n<|||>\n"
+    MAX_CHARS = 4500 # margem de segurança (limite ~5000) no deep_translator
+
     for meal in meals:
+        texts_to_translate: list[str] = []
+        keys_map: list[tuple[dict, str]] = []
+
         for key, value in meal.items():
-            if key not in FIELDS_TO_SKIP_TRANSLATE and isinstance(value, str) and value.strip():
+            if (
+                key not in FIELDS_TO_SKIP_TRANSLATION
+                and isinstance(value, str)
+                and value.strip()
+            ):
+                texts_to_translate.append(value)
+                keys_map.append((meal, key))
+
+        if not texts_to_translate:
+            continue
+
+        payload = SEPARATOR.join(texts_to_translate)
+
+        if len(payload) > MAX_CHARS:
+            for (meal_ref, key), text in zip(keys_map, texts_to_translate):
                 try:
-                    meal[key] = translator_pt.translate(value)
+                    meal_ref[key] = translator_pt.translate(text)
                 except Exception:
-                    meal[key] = value
-    return {
-        "meals": meals
-    }
+                    meal_ref[key] = text
+            continue
+
+        try:
+            translated_payload = translator_pt.translate(payload)
+            translated_texts = translated_payload.split(SEPARATOR)
+
+            if len(translated_texts) != len(keys_map):
+                raise ValueError("Mismatch na tradução em lote")
+
+            for (meal_ref, key), translated in zip(keys_map, translated_texts):
+                meal_ref[key] = translated
+
+        except Exception:
+            for (meal_ref, key), text in zip(keys_map, texts_to_translate):
+                meal_ref[key] = text
+
+    return {"meals": meals}
+
 
 @app.get("/recipe")
 def get_receita(ingredient: str) -> dict:
