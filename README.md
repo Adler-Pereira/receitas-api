@@ -160,6 +160,10 @@ Para evitar múltiplas chamadas ao tradutor:
 
 <h2 id="started">▶️ Como Executar o Projeto</h2>
 
+<h3>Pré-requisitos</h3>
+- Python 3.12.10
+<br>
+
 ### 1️⃣ Criar ambiente virtual
 
 ```bash
