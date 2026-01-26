@@ -4,7 +4,7 @@ HTTP_ERRORS = {
     403: "Acesso negado",
     404: "Nenhuma receita encontrada",
     500: "Erro interno do servidor",
-    502: "Bad Gateway",
+    502: "Resposta inválida da API externa",
     503: "Serviço indisponível",
 }
 
