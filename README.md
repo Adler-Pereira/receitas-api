@@ -138,6 +138,8 @@ A API retorna mensagens claras para os principais cenários:
 | Status | Motivo                           |
 | ------ | -------------------------------- |
 | 400    | Requisição inválida              |
+| 401    | Acesso não autorizado            |
+| 403    | Acesso negado                    |
 | 404    | Nenhuma receita encontrada       |
 | 502    | Resposta inválida da API externa |
 | 503    | Falha de conexão                 |
